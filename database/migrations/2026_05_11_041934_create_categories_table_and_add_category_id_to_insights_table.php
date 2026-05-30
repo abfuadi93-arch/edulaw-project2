@@ -9,6 +9,8 @@ return new class extends Migration
 {
     public function up(): void
     {
+        $prefix = DB::getTablePrefix();
+
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
@@ -34,7 +36,7 @@ return new class extends Migration
         DB::table('insights')
             ->leftJoin('categories', 'insights.category', '=', 'categories.name')
             ->whereNull('insights.category_id')
-            ->update(['insights.category_id' => DB::raw('categories.id')]);
+            ->update(['insights.category_id' => DB::raw($prefix.'categories.id')]);
     }
 
     public function down(): void

@@ -9,6 +9,8 @@ return new class extends Migration
 {
     public function up(): void
     {
+        $prefix = DB::getTablePrefix();
+
         Schema::table('insights', function (Blueprint $table) {
             $table->string('author_name')->nullable()->after('author_id');
             $table->string('author_affiliation')->nullable()->after('author_name');
@@ -18,7 +20,7 @@ return new class extends Migration
         DB::table('insights')
             ->leftJoin('users', 'insights.author_id', '=', 'users.id')
             ->whereNull('insights.author_name')
-            ->update(['insights.author_name' => DB::raw('coalesce(users.name, insights.author)')]);
+            ->update(['insights.author_name' => DB::raw("coalesce({$prefix}users.name, {$prefix}insights.author)")]);
     }
 
     public function down(): void

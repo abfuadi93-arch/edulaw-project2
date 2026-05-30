@@ -12,11 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        $prefix = DB::getTablePrefix();
+
         DB::table('insights')
             ->leftJoin('categories', 'insights.category', '=', 'categories.name')
             ->whereNull('insights.category_id')
             ->whereNotNull('insights.category')
-            ->update(['insights.category_id' => DB::raw('categories.id')]);
+            ->update(['insights.category_id' => DB::raw($prefix.'categories.id')]);
 
         Schema::table('insights', function (Blueprint $table) {
             $table->dropColumn('category');
@@ -28,6 +30,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        $prefix = DB::getTablePrefix();
+
         Schema::table('insights', function (Blueprint $table) {
             $table->string('category')->nullable()->after('meta_description');
         });
@@ -35,6 +39,6 @@ return new class extends Migration
         DB::table('insights')
             ->leftJoin('categories', 'insights.category_id', '=', 'categories.id')
             ->whereNotNull('insights.category_id')
-            ->update(['insights.category' => DB::raw('categories.name')]);
+            ->update(['insights.category' => DB::raw($prefix.'categories.name')]);
     }
 };

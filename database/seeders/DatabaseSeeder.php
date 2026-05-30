@@ -16,24 +16,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Membuat User Admin Permanen
+        $adminPassword = env('ADMIN_PASSWORD');
+
+        if (! $adminPassword && app()->environment('production')) {
+            $this->command?->warn('ADMIN_PASSWORD is not set; skipping admin user.');
+
+            return;
+        }
+
         User::updateOrCreate(
-            ['email' => 'abfuadi93@gmail.com'], // Kunci pencarian
+            ['email' => env('ADMIN_EMAIL', 'abfuadi93@gmail.com')],
             [
-                'name' => 'Admin Edulaw',
-                'password' => Hash::make('Abfuadi!13'), // Ganti sesuai keinginan
+                'name' => env('ADMIN_NAME', 'Admin Edulaw'),
+                'password' => Hash::make($adminPassword ?: 'password'),
+                'role' => 'admin',
                 'email_verified_at' => now(),
             ]
         );
-
-        // 2. Opsi: Membuat user tambahan untuk testing (Opsional)
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
-        ]);
-
-        // Jika Anda ingin membuat 10 user random sekaligus, aktifkan ini:
-        // User::factory(10)->create();
     }
 }
