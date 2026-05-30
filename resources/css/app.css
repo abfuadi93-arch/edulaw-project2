@@ -1,0 +1,22 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    --color-edulaw-navy: #0B1F4D;
+    --color-edulaw-blue: #16356B;
+    --color-edulaw-soft: #F8FAFC;
+    --color-edulaw-border: #E2E8F0;
+    --color-edulaw-text: #0F172A;
+    --color-edulaw-muted: #475569;
+
+    --radius-edulaw: 28px;
+
+    --shadow-edulaw:
+        0 20px 50px rgba(15, 23, 42, .06);
+}
